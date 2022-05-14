@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "ical-generator": "^3.4.2",
     "next": "12.1.6",
+    "node-fetch": "^3.2.4",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-dom": "18.1.0",
+    "title-case": "^3.0.3"
   },
   "devDependencies": {
     "@types/node": "17.0.33",
