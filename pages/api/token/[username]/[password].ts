@@ -1,5 +1,5 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import puppeteer from "puppeteer";
+import chromium from "chrome-aws-lambda";
 
 export default async function handler(
     req: NextApiRequest,
@@ -9,7 +9,13 @@ export default async function handler(
     const password: string = req.query['password'].toString();
 
     await (async () => {
-        const browser = await puppeteer.launch();
+        const browser = await chromium.puppeteer.launch({
+            args: chromium.args,
+            defaultViewport: chromium.defaultViewport,
+            executablePath: await chromium.executablePath,
+            headless: chromium.headless,
+            ignoreHTTPSErrors: true,
+        });
         const page = await browser.newPage();
         page.on('request', async req => {
             const auth = req.headers()['x-community-token']
