@@ -4,6 +4,16 @@ import fetch, {Response} from 'node-fetch';
 import ical, {ICalCalendar} from 'ical-generator';
 import { titleCase } from "title-case";
 
+function getDate(args: {
+  dayOffset: number,
+  monthOffset: number
+}): string {
+  const date = new Date();
+  date.setMonth(date.getMonth() + args.monthOffset);
+  date.setDate(date.getDate() + args.dayOffset);
+  return `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
+}
+
 function getResponse(token: string): Promise<Response> {
   const date = new Date();
   console.log(`${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + date.getDate()).slice(-2)}`)
@@ -24,7 +34,7 @@ function getResponse(token: string): Promise<Response> {
     },
     "referrer": "https://caulfieldlife.com.au/",
     "referrerPolicy": "strict-origin-when-cross-origin",
-    "body": "{\"operationName\":\"ClassData\",\"variables\":{\"startTime\":\"2022-05-08T14:00:00.000Z\",\"endTime\":\"2022-05-22T13:59:59.999Z\",\"memberId\":\"cjw0mjhvf1fac0993081nfrp6\"},\"query\":\"fragment ClassFields on Class {\\n  id\\n  title\\n  description\\n  startTime\\n  endTime\\n  dayOrder\\n  periodOrder\\n  periodName\\n  colour\\n  room\\n  teacherName\\n  __typename\\n}\\n\\nquery ClassData($memberId: ID!, $startTime: DateTime!, $endTime: DateTime) {\\n  classes(where: {startTime: $startTime, endTime: $endTime, memberId: $memberId}, orderBy: {property: \\\"startTime\\\", sort: ASC}) {\\n    ...ClassFields\\n    __typename\\n  }\\n}\\n\"}",
+    "body": `{\"operationName\":\"ClassData\",\"variables\":{\"startTime\":\"${getDate({dayOffset: -5, monthOffset: 0})}T14:00:00.000Z\",\"endTime\":\"${getDate({dayOffset: 0, monthOffset: 1})}T13:59:59.999Z\",\"memberId\":\"cjw0mjhvf1fac0993081nfrp6\"},\"query\":\"fragment ClassFields on Class {\\n  id\\n  title\\n  description\\n  startTime\\n  endTime\\n  dayOrder\\n  periodOrder\\n  periodName\\n  colour\\n  room\\n  teacherName\\n  __typename\\n}\\n\\nquery ClassData($memberId: ID!, $startTime: DateTime!, $endTime: DateTime) {\\n  classes(where: {startTime: $startTime, endTime: $endTime, memberId: $memberId}, orderBy: {property: \\\"startTime\\\", sort: ASC}) {\\n    ...ClassFields\\n    __typename\\n  }\\n}\\n\"}`,
     "method": "POST",
     // @ts-ignore
     "mode": "cors",
