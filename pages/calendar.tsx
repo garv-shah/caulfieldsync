@@ -1,6 +1,5 @@
 import {useForm} from '@mantine/form';
 import {PasswordInput, Group, Button, TextInput, Title, Text, Space, LoadingOverlay, Center} from '@mantine/core';
-import { Prism } from '@mantine/prism';
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
 import {useState} from "react";
@@ -101,13 +100,6 @@ export default function Calendar() {
                             <Button id="download-button" hidden={!calendarVisible} type="submit">Download Calendar</Button>
 
                             <div hidden={calendarVisible} style={{width: "20vw"}}>
-                                <Prism
-                                    language="tsx"
-                                    noCopy
-                                >{`${windowURL}${calendarURL}`}</Prism>
-
-                                <Space h="md"/>
-
                                 <Center>
                                     <Button
                                         onClick={() => {
