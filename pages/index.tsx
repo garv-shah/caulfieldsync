@@ -2,6 +2,7 @@ import {Grid} from '@mantine/core'
 import type {NextPage} from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import Link from 'next/link'
 
 const Home: NextPage = () => {
     return (
@@ -33,10 +34,12 @@ const Home: NextPage = () => {
                         <p>Check the project out on GitHub!</p>
                     </a>
 
-                    <a href="/calendar" className={styles.card}>
-                        <h2>Calendar &rarr;</h2>
-                        <p>Get an Apple Calendar subscription that syncs with your CaulfieldLife timetable!</p>
-                    </a>
+                    <Link href="/calendar">
+                        <a className={styles.card}>
+                            <h2>Calendar &rarr;</h2>
+                            <p>Get an Apple Calendar subscription that syncs with your CaulfieldLife timetable!</p>
+                        </a>
+                    </Link>
                 </Grid>
             </main>
 
