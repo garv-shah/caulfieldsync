@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mantine/core": "^4.2.4",
+    "@mantine/core": "^4.2.5",
     "@mantine/form": "^4.2.4",
-    "@mantine/hooks": "^4.2.4",
+    "@mantine/hooks": "^4.2.5",
     "@mantine/next": "^4.2.4",
+    "@mantine/prism": "^4.2.5",
     "chrome-aws-lambda": "^10.1.0",
     "framer-motion": "^6.3.3",
     "ical-generator": "^3.4.2",
