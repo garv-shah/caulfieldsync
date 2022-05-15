@@ -41,10 +41,8 @@ function getResponse(token: string): Promise<Response> {
   return response;
 }
 
-async function getCalendar(response: Response): Promise<ICalCalendar> {
-  async function main(response: Response) {
-    // @ts-ignore
-    const data: object = await response.json()
+async function getCalendar(data: unknown): Promise<ICalCalendar> {
+  async function main(data: unknown) {
 
     const calendar = ical({name: 'School Timetable'});
 
@@ -79,7 +77,7 @@ async function getCalendar(response: Response): Promise<ICalCalendar> {
     return calendar
   }
 
-  return main(response)
+  return main(data)
 }
 
 export default async function handler(
@@ -88,13 +86,15 @@ export default async function handler(
 ) {
   const token: string = req.query['token'].toString()
   const response = await getResponse(token);
+  const jsonResponse = await response.json()
 
-  if (response.status == 200) {
-    const calendar = await getCalendar(response)
+  // @ts-ignore
+  if (response.status == 200 && jsonResponse['errors'] == undefined) {
+    const calendar = await getCalendar(jsonResponse)
     calendar.serve(res)
   } else if (response.status == 403) {
     res.status(403).json({ error: 'Invalid Token Provided. Please make sure you have the correct user token from CaulfieldLife' })
   } else {
-    res.status(response.status).json(await response.json())
+    res.status(response.status).json(jsonResponse)
   }
 }
