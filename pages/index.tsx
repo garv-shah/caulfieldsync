@@ -29,7 +29,7 @@ const Home: NextPage = () => {
                     <code className={styles.code}>/api</code>
                 </p>
 
-                <Grid>
+                <div className={styles.grid}>
                     <a href="https://github.com/garv-shah/caulfieldsync/blob/main/README.md" className={styles.card}>
                         <h2>Documentation &rarr;</h2>
                         <p>Find information on how to use the API and more!</p>
@@ -46,7 +46,7 @@ const Home: NextPage = () => {
                             <p>Get an Apple Calendar subscription that syncs with your CaulfieldLife timetable!</p>
                         </a>
                     </Link>
-                </Grid>
+                </div>
             </main>
 
             <footer className={styles.footer}>
