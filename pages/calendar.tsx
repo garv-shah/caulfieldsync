@@ -81,8 +81,6 @@ export default function Calendar() {
                             downloadURI(`/api/calendar/${token}`, "timetable.ics")
 
                             setVisible(false);
-
-                            window.location.replace("../");
                         })
                     }>
                         <TextInput
