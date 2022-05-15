@@ -58,9 +58,9 @@ export default function Calendar() {
 
                 <Space h="md"/>
 
-                <Text>Please enter your CaulfieldLife login details to proceed!</Text>
+                <Text align="center">Please enter your CaulfieldLife login details to proceed!</Text>
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
-                <Text>Be patient, it'll take about 15 seconds :)</Text>
+                <Text align="center">Be patient, it'll take about 15 seconds :)</Text>
 
                 <Space h="lg"/>
                 <div>
