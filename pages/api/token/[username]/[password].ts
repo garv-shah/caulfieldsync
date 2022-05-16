@@ -1,5 +1,4 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import fetch, {Response} from "node-fetch";
 
 export default async function handler(
     req: NextApiRequest,

@@ -1,8 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
 import ical, {ICalCalendar} from 'ical-generator';
-import { titleCase } from "title-case";
+import {titleCase} from "title-case";
+import { server } from '../../../config';
 
 function getDate(args: {
   dayOffset: number,
@@ -14,7 +15,16 @@ function getDate(args: {
   return `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
 }
 
-function getResponse(token: string): Promise<Response> {
+function getUserID(token: string): Promise<Response> {
+  return fetch(`${server}/api/userInfo/${token}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+}
+
+function getResponse(token: string, userID: string): Promise<Response> {
   const response = fetch("https://life-api.caulfieldlife.com.au/", {
     "headers": {
       "accept": "*/*",
@@ -31,7 +41,7 @@ function getResponse(token: string): Promise<Response> {
     },
     "referrer": "https://caulfieldlife.com.au/",
     "referrerPolicy": "strict-origin-when-cross-origin",
-    "body": `{\"operationName\":\"ClassData\",\"variables\":{\"startTime\":\"${getDate({dayOffset: -5, monthOffset: 0})}T14:00:00.000Z\",\"endTime\":\"${getDate({dayOffset: 0, monthOffset: 1})}T13:59:59.999Z\",\"memberId\":\"cjw0mjhvf1fac0993081nfrp6\"},\"query\":\"fragment ClassFields on Class {\\n  id\\n  title\\n  description\\n  startTime\\n  endTime\\n  dayOrder\\n  periodOrder\\n  periodName\\n  colour\\n  room\\n  teacherName\\n  __typename\\n}\\n\\nquery ClassData($memberId: ID!, $startTime: DateTime!, $endTime: DateTime) {\\n  classes(where: {startTime: $startTime, endTime: $endTime, memberId: $memberId}, orderBy: {property: \\\"startTime\\\", sort: ASC}) {\\n    ...ClassFields\\n    __typename\\n  }\\n}\\n\"}`,
+    "body": `{\"operationName\":\"ClassData\",\"variables\":{\"startTime\":\"${getDate({dayOffset: -5, monthOffset: 0})}T14:00:00.000Z\",\"endTime\":\"${getDate({dayOffset: 0, monthOffset: 1})}T13:59:59.999Z\",\"memberId\":\"${userID}\"},\"query\":\"fragment ClassFields on Class {\\n  id\\n  title\\n  description\\n  startTime\\n  endTime\\n  dayOrder\\n  periodOrder\\n  periodName\\n  colour\\n  room\\n  teacherName\\n  __typename\\n}\\n\\nquery ClassData($memberId: ID!, $startTime: DateTime!, $endTime: DateTime) {\\n  classes(where: {startTime: $startTime, endTime: $endTime, memberId: $memberId}, orderBy: {property: \\\"startTime\\\", sort: ASC}) {\\n    ...ClassFields\\n    __typename\\n  }\\n}\\n\"}`,
     "method": "POST",
     // @ts-ignore
     "mode": "cors",
@@ -61,8 +71,8 @@ async function getCalendar(data: unknown): Promise<ICalCalendar> {
         }
       }
 
-      console.log(classes[classIndex]['description'])
-      console.log(titleCase(classes[classIndex]['description'].toLowerCase()))
+      // console.log(classes[classIndex]['description'])
+      // console.log(titleCase(classes[classIndex]['description'].toLowerCase()))
 
       calendar.createEvent({
         start: new Date(classes[classIndex]['startTime']),
@@ -85,7 +95,17 @@ export default async function handler(
     res: NextApiResponse
 ) {
   const token: string = req.query['token'].toString()
-  const response = await getResponse(token);
+  let userID: string;
+
+  if (req.query['userID'] == undefined) {
+    const response = await getUserID(token)
+    // @ts-ignore
+    userID = (await response.json())['member']['id']
+  } else {
+    userID = req.query['userID'][0]
+  }
+
+  const response = await getResponse(token, userID);
   const jsonResponse = await response.json()
 
   // @ts-ignore
