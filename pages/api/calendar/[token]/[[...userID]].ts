@@ -3,7 +3,7 @@ import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
 import ical, {ICalCalendar} from 'ical-generator';
 import {titleCase} from "title-case";
-import { server } from '../../../config';
+import { server } from '../../../../config';
 
 function getDate(args: {
   dayOffset: number,
