@@ -30,7 +30,7 @@ const Home: NextPage = () => {
                 </p>
 
                 <div className={styles.grid}>
-                    <a href="https://github.com/garv-shah/caulfieldsync/blob/main/README.md" className={styles.card}>
+                    <a href="https://caulfieldsync-docs.vercel.app" className={styles.card}>
                         <h2>Documentation &rarr;</h2>
                         <p>Find information on how to use the API and more!</p>
                     </a>
