@@ -18,7 +18,7 @@ function getResponse(token: string): Promise<Response> {
             "Referer": "https://caulfieldlife.com.au/",
             "Referrer-Policy": "strict-origin-when-cross-origin"
         },
-        "body": `{\"operationName\":\"GetSessionByJwt\",\"variables\":{\"jwtToken\":\"${token}\"},\"query\":\"query GetSessionByJwt($jwtToken: String!) {\\n  sessionByJwt(jwtIdToken: $jwtToken) {\\n    id\\n    processedAt\\n    isImpersonating\\n    xhqToken\\n    member {\\n      id\\n      firstName\\n      lastName\\n      preferredName\\n      roles {\\n        title\\n        __typename\\n      }\\n      __typename\\n    }\\n    sessionSyncCheckpoints {\\n      success\\n      type\\n      error\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}`,
+        "body": "{\"operationName\":\"Me\",\"variables\":{},\"query\":\"fragment UserProfileMemberFields on Member {\\n  id\\n  address\\n  postalAddress\\n  useHomeAddress\\n  telephone {\\n    id\\n    number\\n    type\\n    __typename\\n  }\\n  __typename\\n}\\n\\nfragment MeFields on Member {\\n  hasUserLoggedIn\\n  firstName\\n  lastName\\n  preferredName\\n  avatar\\n  email\\n  birthDate\\n  currentYear\\n  schoolHouse\\n  externalId\\n  aggregateCapabilities\\n  notificationSettings {\\n    absenceConfirmation\\n    inbox\\n    consent\\n    __typename\\n  }\\n  roles {\\n    id\\n    title\\n    slug\\n    capabilities\\n    __typename\\n  }\\n  relatives {\\n    id\\n    firstName\\n    lastName\\n    preferredName\\n    avatar\\n    email\\n    birthDate\\n    address\\n    aggregateCapabilities\\n    medicalInfo {\\n      medicalAuthority {\\n        authorized\\n        isDone\\n        __typename\\n      }\\n      __typename\\n    }\\n    memberConsents {\\n      id\\n      status\\n      generalConsentPolicy {\\n        type\\n        __typename\\n      }\\n      __typename\\n    }\\n    telephone {\\n      id\\n      number\\n      type\\n      __typename\\n    }\\n    currentYear\\n    schoolHouse\\n    roles {\\n      id\\n      title\\n      slug\\n      capabilities\\n      __typename\\n    }\\n    audiences {\\n      id\\n      campus\\n      role {\\n        id\\n        title\\n        slug\\n        capabilities\\n        __typename\\n      }\\n      createdAt\\n      updatedAt\\n      __typename\\n    }\\n    rollClass\\n    __typename\\n  }\\n  audiences {\\n    id\\n    campus\\n    role {\\n      id\\n      title\\n      slug\\n      capabilities\\n      __typename\\n    }\\n    createdAt\\n    updatedAt\\n    __typename\\n  }\\n  createdAt\\n  updatedAt\\n  __typename\\n}\\n\\nquery Me {\\n  me {\\n    ...UserProfileMemberFields\\n    ...MeFields\\n    __typename\\n  }\\n}\\n\"}",
         "method": "POST"
     });
 }
@@ -30,15 +30,12 @@ export default async function handler(
     const token: string = req.query['token'].toString()
     const response = await getResponse(token);
     const jsonResponse = await response.json()
+    console.log(jsonResponse);
 
     // @ts-ignore
-    if (jsonResponse['data']['sessionByJwt'] != null) {
-        res.status(response.status).json({
-            // @ts-ignore
-            "member": jsonResponse['data']['sessionByJwt']['member'],
-            // @ts-ignore
-            "xhqToken": jsonResponse['data']['sessionByJwt']['xhqToken']
-        })
+    if (jsonResponse['data']['me'] != null) {
+        // @ts-ignore
+        res.status(response.status).json(jsonResponse['data']['me'])
     } else {
         res.status(403).json({ error: 'Invalid Token Provided. Please make sure you have the correct user token from CaulfieldLife' })
     }

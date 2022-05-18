@@ -100,7 +100,7 @@ export default async function handler(
   if (req.query['userID'] == undefined) {
     const response = await getUserID(token)
     // @ts-ignore
-    userID = (await response.json())['member']['id']
+    userID = (await response.json())['id']
   } else {
     userID = req.query['userID'][0]
   }
