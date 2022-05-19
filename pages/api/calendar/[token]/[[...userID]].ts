@@ -4,6 +4,7 @@ import fetch, {Response} from 'node-fetch';
 import ical, {ICalCalendar} from 'ical-generator';
 import {titleCase} from "title-case";
 import { server } from '../../../../config';
+import {ICalAlarmType} from "ical-generator/dist/alarm";
 
 function getDate(args: {
   dayOffset: number,
@@ -83,7 +84,10 @@ async function getCalendar(data: unknown): Promise<ICalCalendar> {
         attendees: attendees
       });
 
-      event.createAlarm({type: 'display', trigger: 300});
+      event.createAlarm({
+        type: ICalAlarmType.display,
+        trigger: 300, // 5min before event
+      });
     }
 
     return calendar
