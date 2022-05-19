@@ -74,7 +74,7 @@ async function getCalendar(data: unknown): Promise<ICalCalendar> {
       // console.log(classes[classIndex]['description'])
       // console.log(titleCase(classes[classIndex]['description'].toLowerCase()))
 
-      calendar.createEvent({
+      let event = calendar.createEvent({
         start: new Date(classes[classIndex]['startTime']),
         end: new Date(classes[classIndex]['endTime']),
         summary: titleCase(classes[classIndex]['description'].toLowerCase()),
@@ -82,6 +82,8 @@ async function getCalendar(data: unknown): Promise<ICalCalendar> {
         location: classes[classIndex]['room'],
         attendees: attendees
       });
+
+      event.createAlarm({type: 'display', trigger: 300});
     }
 
     return calendar

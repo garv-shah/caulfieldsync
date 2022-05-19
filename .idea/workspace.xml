@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="ed35326e-0060-4855-8256-640a6870da98" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/calendar/[token]/[[...userID]].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/calendar/[token]/[[...userID]].ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/userInfo/[token].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/userInfo/[token].ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +94,7 @@
       <workItem from="1652650049492" duration="7560000" />
       <workItem from="1652702968098" duration="1185000" />
       <workItem from="1652839178514" duration="795000" />
-      <workItem from="1652841781303" duration="491000" />
+      <workItem from="1652841781303" duration="2462000" />
     </task>
     <servers />
   </component>
