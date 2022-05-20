@@ -30,7 +30,6 @@ export default async function handler(
     const token: string = req.query['token'].toString()
     const response = await getResponse(token);
     const jsonResponse = await response.json()
-    console.log(jsonResponse);
 
     // @ts-ignore
     if (jsonResponse['data']['me'] != null) {

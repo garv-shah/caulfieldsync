@@ -5,9 +5,8 @@ import ical, {ICalCalendar, ICalCategory} from 'ical-generator';
 import {titleCase} from "title-case";
 import { server } from '../../../../config';
 import {ICalAlarmType} from "ical-generator/dist/alarm";
-import {ICalCategoryData} from "ical-generator/dist/category";
 
-function getDate(args: {
+export function getDate(args: {
   dayOffset: number,
   monthOffset: number
 }): string {
@@ -17,7 +16,7 @@ function getDate(args: {
   return `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
 }
 
-function getUserID(token: string): Promise<Response> {
+export function getUserID(token: string): Promise<Response> {
   return fetch(`${server}/api/userInfo/${token}`, {
     method: "GET",
     headers: {
