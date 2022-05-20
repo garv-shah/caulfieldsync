@@ -1,10 +1,11 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
-import ical, {ICalCalendar} from 'ical-generator';
+import ical, {ICalCalendar, ICalCategory} from 'ical-generator';
 import {titleCase} from "title-case";
 import { server } from '../../../../config';
 import {ICalAlarmType} from "ical-generator/dist/alarm";
+import {ICalCategoryData} from "ical-generator/dist/category";
 
 function getDate(args: {
   dayOffset: number,
@@ -60,8 +61,19 @@ async function getCalendar(data: unknown): Promise<ICalCalendar> {
     // @ts-ignore
     const classes = data['data']['classes']
 
+    let classNames = new Set<string>();
+    let categoryDict = new Map<string, ICalCategory>();
+
     for (let classIndex = 0; classIndex < classes.length; classIndex++) {
+      const subjectName = titleCase(classes[classIndex]['description'].toLowerCase());
       let attendees = [];
+
+      let classNamesLength = classNames.size
+      classNames.add(subjectName)
+
+      if (classNamesLength != classNames.size) {
+        categoryDict.set(subjectName, new ICalCategory({name: subjectName}));
+      }
 
       if (classes[classIndex]['teacherName'] != '') {
         for (let i = 0; i < classes[classIndex]['teacherName'].split(', ').length; i++) {
@@ -83,6 +95,8 @@ async function getCalendar(data: unknown): Promise<ICalCalendar> {
         location: classes[classIndex]['room'],
         attendees: attendees
       });
+
+      event.categories([categoryDict.get(subjectName) ?? new ICalCategory({name: subjectName})]);
 
       event.createAlarm({
         type: ICalAlarmType.display,
