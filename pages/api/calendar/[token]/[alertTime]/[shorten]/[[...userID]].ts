@@ -76,7 +76,11 @@ async function getCalendar(data: unknown, request: NextApiRequest): Promise<ICal
         subjectName = subjectName
             .split(' - ')[0]
             .replace(/ [W|C]\d\d?/gm,"")
-            .replace(/\d\d /gm,"")
+            .replace(/\d\d? /gm,"")
+            .replace(/ \([Yr]\d\d?\)/gm,"")
+            .replace(/ \(Yr \d\d?\)/,"")
+            .replace(/ S1| S2/,"")
+            .replace(/\d\d?\w /gm,"")
             .replace(/ Music_ensembles/gm,"")
             .replace(/ \(Wh\)| \(Ca\)| \(CC\)| \(WH\)| \(Cc\)/,"");
       }
