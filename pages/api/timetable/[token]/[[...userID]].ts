@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
-import {getDate, getUserID} from "../../calendar/[token]/[[...userID]]";
+import {getDate, getUserID} from "../../calendar/[token]/[alertTime]/[[...userID]]";
 
 function getResponse(token: string, userID: string): Promise<Response> {
     return fetch("https://life-api.caulfieldlife.com.au/", {

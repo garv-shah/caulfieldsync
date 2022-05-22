@@ -3,7 +3,7 @@ import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
 import ical, {ICalCalendar, ICalCategory} from 'ical-generator';
 import {titleCase} from "title-case";
-import { server } from '../../../../config';
+import { server } from '../../../../../config';
 import {ICalAlarmType} from "ical-generator/dist/alarm";
 
 export function getDate(args: {
@@ -52,8 +52,9 @@ function getResponse(token: string, userID: string): Promise<Response> {
   return response;
 }
 
-async function getCalendar(data: unknown): Promise<ICalCalendar> {
+async function getCalendar(data: unknown, request: NextApiRequest): Promise<ICalCalendar> {
   async function main(data: unknown) {
+    let alertTime = request.query['alertTime'].toString();
 
     const calendar = ical({name: 'School Timetable'});
 
@@ -97,10 +98,12 @@ async function getCalendar(data: unknown): Promise<ICalCalendar> {
 
       event.categories([categoryDict.get(subjectName) ?? new ICalCategory({name: subjectName})]);
 
-      event.createAlarm({
-        type: ICalAlarmType.display,
-        trigger: 300, // 5min before event
-      });
+      if (alertTime != 'null') {
+        event.createAlarm({
+          type: ICalAlarmType.display,
+          trigger: Number(alertTime), // 5min before event
+        });
+      }
     }
 
     return calendar
@@ -121,7 +124,7 @@ export default async function handler(
     // @ts-ignore
     userID = (await response.json())['id']
   } else {
-    userID = req.query['userID'][0]
+    userID = req.query['userID'].toString()
   }
 
   const response = await getResponse(token, userID);
@@ -129,7 +132,7 @@ export default async function handler(
 
   // @ts-ignore
   if (response.status == 200 && jsonResponse['errors'] == undefined) {
-    const calendar = await getCalendar(jsonResponse)
+    const calendar = await getCalendar(jsonResponse, req)
     calendar.serve(res)
   } else if (response.status == 403) {
     res.status(403).json({ error: 'Invalid Token Provided. Please make sure you have the correct user token from CaulfieldLife' })

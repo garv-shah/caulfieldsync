@@ -1,5 +1,5 @@
 import {useForm} from '@mantine/form';
-import {PasswordInput, Group, Button, TextInput, Title, Text, Space, LoadingOverlay, Center} from '@mantine/core';
+import {PasswordInput, Group, Button, TextInput, Title, Text, Space, LoadingOverlay, Center, Checkbox, NumberInput} from '@mantine/core';
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
 import {useState} from "react";
@@ -15,6 +15,7 @@ export default function Calendar() {
         initialValues: {
             studentID: '',
             password: '',
+            alertTime: 5,
         },
         validate: {
             studentID: (value) =>
@@ -28,6 +29,7 @@ export default function Calendar() {
     const [calendarVisible, calendarSetVisible] = useState(true);
     const [calendarURL, calendarSetURL] = useState('');
     const [windowURL, setWindowURL] = useState('');
+    const [alerts, setAlerts] = useState(false);
 
     return (
         <div className={styles.container}>
@@ -71,7 +73,7 @@ export default function Calendar() {
                             const token: string = (await response.json())['token']
 
                             // await fetch(`/api/calendar/${token}`);
-                            calendarSetURL( `/api/calendar/${token}`);
+                            calendarSetURL( `/api/calendar/${token}/${alerts ? values.alertTime*60 : 'null'}`);
                             setWindowURL(window.location.origin);
                             setVisible(false);
                             const button = document.getElementById("download-button");
@@ -84,6 +86,7 @@ export default function Calendar() {
                             label="Student ID"
                             placeholder="Student ID"
                             description="Please input your Student ID that you would use on services such as CaulfieldLife"
+                            required={true}
                             {...form.getInputProps('studentID')}
                         />
 
@@ -91,8 +94,26 @@ export default function Calendar() {
                             label="Password"
                             placeholder="Password"
                             description="Please input the password that you would use on services such as CaulfieldLife"
+                            required={true}
                             {...form.getInputProps('password')}
                         />
+
+                        <Space h="md"/>
+
+                        <Center>
+                            <Checkbox checked={alerts} onChange={(event) => setAlerts(event.currentTarget.checked)}
+                                label="Get Notifications Before Classes?"
+                            />
+                        </Center>
+
+                        <div hidden={!alerts}>
+                            <Space h="md"/>
+
+                            <NumberInput
+                                defaultValue={5}
+                                label="How many minutes before your class would you like to be notified?"
+                                {...form.getInputProps('alertTime')}/>
+                        </div>
 
                         <Space h="md"/>
 
