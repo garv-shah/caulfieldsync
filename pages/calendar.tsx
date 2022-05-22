@@ -21,8 +21,17 @@ export default function Calendar() {
         validate: {
             studentID: (value) =>
                 !isNumeric(value) ? 'Invalid Student ID!!' : null,
-            password: (value) =>
-                value == '' ? 'Please enter a password!' : null
+            password: (value) => {
+                if (value == '') {
+                    return 'Please enter a password!'
+                } else if (value.includes('?')) {
+                    return "Sorry! This tool won't work if you have a '?' in your password!"
+                } else if (value.includes('/')) {
+                    return "Sorry! This tool won't work if you have a '/' in your password!"
+                } else {
+                    return null;
+                }
+            },
         },
     });
 
@@ -55,8 +64,8 @@ export default function Calendar() {
                 <Space h="md"/>
 
                 <Text align="center">Please enter your CaulfieldLife login details to proceed!</Text>
-                {/* eslint-disable-next-line react/no-unescaped-entities */}
-                <Text align="center">Be patient, it'll take about 15 seconds :)</Text>
+                <Space h="md"/>
+                <Text align="center" size={"sm"}>Be patient, it&apos;ll take about 15 seconds :)</Text>
 
                 <Space h="lg"/>
                 <div>
@@ -73,14 +82,19 @@ export default function Calendar() {
 
                             const token: string = (await response.json())['token']
 
-                            // await fetch(`/api/calendar/${token}`);
-                            calendarSetURL( `/api/calendar/${token}`);
-                            setWindowURL(window.location.origin);
+                            if (token == undefined) {
+                                form.setFieldError("password", "Sorry! Your password was either wrong or something went horribly wrong :P\nIf so, please tell Garv, they'll try to help")
+                            } else {
+                                // await fetch(`/api/calendar/${token}`);
+                                calendarSetURL( `/api/calendar/${token}`);
+                                setWindowURL(window.location.origin);
+                                const button = document.getElementById("generate-button");
+                                // @ts-ignore
+                                button.parentNode.removeChild(button);
+                                calendarSetVisible(false);
+                            }
+
                             setVisible(false);
-                            const button = document.getElementById("generate-button");
-                            // @ts-ignore
-                            button.parentNode.removeChild(button);
-                            calendarSetVisible(false);
                         })
                     }>
                         <TextInput
