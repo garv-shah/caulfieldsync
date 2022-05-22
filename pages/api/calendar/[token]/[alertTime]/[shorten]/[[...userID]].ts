@@ -114,9 +114,15 @@ async function getCalendar(data: unknown, request: NextApiRequest): Promise<ICal
       event.categories([categoryDict.get(subjectName) ?? new ICalCategory({name: subjectName})]);
 
       if (alertTime != 'null') {
+        let alertNum = 1
+
+        if (alertTime != '0') {
+          alertNum = Number(alertTime)
+        }
+
         event.createAlarm({
           type: ICalAlarmType.display,
-          trigger: Number(alertTime), // 5min before event
+          trigger: alertNum,
         });
       }
     }
