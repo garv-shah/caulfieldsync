@@ -1,5 +1,18 @@
 import {useForm} from '@mantine/form';
-import {PasswordInput, Group, Button, TextInput, Title, Text, Space, LoadingOverlay, Center, Checkbox, NumberInput} from '@mantine/core';
+import {
+    PasswordInput,
+    Group,
+    Button,
+    TextInput,
+    Title,
+    Text,
+    Space,
+    LoadingOverlay,
+    Center,
+    Checkbox,
+    NumberInput,
+    Stack
+} from '@mantine/core';
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
 import {useState} from "react";
@@ -159,7 +172,10 @@ export default function Calendar() {
             </main>
 
             <footer className={styles.footer}>
-                <a href="https://garv-shah.github.io">By Garv Shah</a>
+                <Stack>
+                    <Text component={"a"} href="https://garv-shah.github.io">By Garv Shah</Text>
+                    <Text>Thanks to Avery Nelson for the idea :D</Text>
+                </Stack>
             </footer>
         </div>
     );
