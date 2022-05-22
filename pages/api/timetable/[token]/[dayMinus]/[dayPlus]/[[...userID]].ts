@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
-import {getDate} from "../../../../calendar/[token]/[alertTime]/[[...userID]]";
-import {getUserID} from "../../../../calendar/[token]/[alertTime]/[[...userID]]";
+import {getDate} from "../../../../calendar/[token]/[alertTime]/[shorten]/[[...userID]]";
+import {getUserID} from "../../../../calendar/[token]/[alertTime]/[shorten]/[[...userID]]";
 
 function getResponse(token: string, userID: string, request: NextApiRequest): Promise<Response> {
     let startDate: string;

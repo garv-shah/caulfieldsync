@@ -3,7 +3,7 @@ import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
 import ical, {ICalCalendar, ICalCategory} from 'ical-generator';
 import {titleCase} from "title-case";
-import { server } from '../../../../../config';
+import { server } from '../../../../../../config';
 import {ICalAlarmType} from "ical-generator/dist/alarm";
 
 export function getDate(args: {
@@ -63,9 +63,24 @@ async function getCalendar(data: unknown, request: NextApiRequest): Promise<ICal
 
     let classNames = new Set<string>();
     let categoryDict = new Map<string, ICalCategory>();
+    let detailedName = '';
 
     for (let classIndex = 0; classIndex < classes.length; classIndex++) {
-      const subjectName = titleCase(classes[classIndex]['description'].toLowerCase());
+      let subjectName = titleCase(
+          classes[classIndex]['description'].toLowerCase()
+      );
+
+      if (request.query['shorten'] == 'true') {
+        detailedName = `\n${subjectName}`;
+
+        subjectName = subjectName
+            .split(' - ')[0]
+            .replace(/ [W|C]\d\d?/gm,"")
+            .replace(/\d\d /gm,"")
+            .replace(/ Music_ensembles/gm,"")
+            .replace(/ \(Wh\)| \(Ca\)| \(CC\)| \(WH\)| \(Cc\)/,"");
+      }
+
       let attendees = [];
 
       let classNamesLength = classNames.size
@@ -90,8 +105,8 @@ async function getCalendar(data: unknown, request: NextApiRequest): Promise<ICal
       let event = calendar.createEvent({
         start: new Date(classes[classIndex]['startTime']),
         end: new Date(classes[classIndex]['endTime']),
-        summary: titleCase(classes[classIndex]['description'].toLowerCase()),
-        description: `Period ${classes[classIndex]['periodName']}`,
+        summary: subjectName,
+        description: `Period ${classes[classIndex]['periodName']}${detailedName}`,
         location: classes[classIndex]['room'],
         attendees: attendees
       });
