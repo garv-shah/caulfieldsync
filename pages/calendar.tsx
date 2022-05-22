@@ -77,7 +77,7 @@ export default function Calendar() {
                             calendarSetURL( `/api/calendar/${token}`);
                             setWindowURL(window.location.origin);
                             setVisible(false);
-                            const button = document.getElementById("download-button");
+                            const button = document.getElementById("generate-button");
                             // @ts-ignore
                             button.parentNode.removeChild(button);
                             calendarSetVisible(false);
@@ -123,7 +123,7 @@ export default function Calendar() {
                         <Space h="md"/>
 
                         <Group position="center" mt="md">
-                            <Button id="download-button" hidden={!calendarVisible} type="submit">Download Calendar</Button>
+                            <Button id="generate-button" hidden={!calendarVisible} type="submit">Generate Calendar</Button>
 
                             <div hidden={calendarVisible} style={{width: "20vw"}}>
                                 <Center>
