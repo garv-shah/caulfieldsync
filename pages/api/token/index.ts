@@ -4,6 +4,12 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
+    if (req.query['username'] == undefined) {
+        res.status(403).json({ error: "No username provided. Please provide a user's Student ID from CaulfieldLife" })
+    } else if (req.query['password'] == undefined) {
+        res.status(403).json({ error: "No password provided. Please provide a user's password from CaulfieldLife" })
+    }
+
     const username: string = req.query['username'].toString();
     const password: string = req.query['password'].toString();
     res.redirect(`https://us-central1-verdis-communications.cloudfunctions.net/token?username=${username}&password=${password}`)

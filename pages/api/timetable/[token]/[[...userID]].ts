@@ -1,9 +1,28 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
-import {getDate, getUserID} from "../../calendar/[token]/[alertTime]/[shorten]/[[...userID]]";
+import {getDate} from "../../calendar/[token]/[[...userID]]";
+import {getUserID} from "../../calendar/[token]/[[...userID]]";
 
-function getResponse(token: string, userID: string): Promise<Response> {
+function getResponse(token: string, userID: string, request: NextApiRequest): Promise<Response> {
+    let startDate: string;
+    let endDate: string;
+    const minusInput = (request.query['dayMinus'] ?? '0').toString();
+    const plusInput = (request.query['dayPlus'] ?? '0').toString();
+
+    if (minusInput.includes('T') || plusInput.includes('T')) {
+        startDate = minusInput;
+        endDate = plusInput;
+    } else {
+        let dayMinus = Number(minusInput)
+        let dayPlus = Number(plusInput)
+        if (isNaN(dayMinus)) dayMinus = 0;
+        if (isNaN(dayPlus)) dayPlus = 0;
+
+        startDate = getDate({dayOffset: -1 - dayMinus, monthOffset: 0}) + 'T14:00:00.000Z';
+        endDate = getDate({dayOffset: dayPlus, monthOffset: 0}) + 'T13:59:59.999Z';
+    }
+
     return fetch("https://life-api.caulfieldlife.com.au/", {
         "headers": {
             "accept": "*/*",
@@ -20,13 +39,7 @@ function getResponse(token: string, userID: string): Promise<Response> {
         },
         "referrer": "https://caulfieldlife.com.au/",
         "referrerPolicy": "strict-origin-when-cross-origin",
-        "body": `{\"operationName\":\"ClassData\",\"variables\":{\"startTime\":\"${getDate({
-            dayOffset: -1,
-            monthOffset: 0
-        })}T14:00:00.000Z\",\"endTime\":\"${getDate({
-            dayOffset: 0,
-            monthOffset: 0
-        })}T13:59:59.999Z\",\"memberId\":\"${userID}\"},\"query\":\"fragment ClassFields on Class {\\n  id\\n  title\\n  description\\n  startTime\\n  endTime\\n  dayOrder\\n  periodOrder\\n  periodName\\n  colour\\n  room\\n  teacherName\\n  __typename\\n}\\n\\nquery ClassData($memberId: ID!, $startTime: DateTime!, $endTime: DateTime) {\\n  classes(where: {startTime: $startTime, endTime: $endTime, memberId: $memberId}, orderBy: {property: \\\"startTime\\\", sort: ASC}) {\\n    ...ClassFields\\n    __typename\\n  }\\n}\\n\"}`,
+        "body": `{\"operationName\":\"ClassData\",\"variables\":{\"startTime\":\"${startDate}\",\"endTime\":\"${endDate}\",\"memberId\":\"${userID}\"},\"query\":\"fragment ClassFields on Class {\\n  id\\n  title\\n  description\\n  startTime\\n  endTime\\n  dayOrder\\n  periodOrder\\n  periodName\\n  colour\\n  room\\n  teacherName\\n  __typename\\n}\\n\\nquery ClassData($memberId: ID!, $startTime: DateTime!, $endTime: DateTime) {\\n  classes(where: {startTime: $startTime, endTime: $endTime, memberId: $memberId}, orderBy: {property: \\\"startTime\\\", sort: ASC}) {\\n    ...ClassFields\\n    __typename\\n  }\\n}\\n\"}`,
         "method": "POST",
         // @ts-ignore
         "mode": "cors",
@@ -49,7 +62,7 @@ export default async function handler(
         userID = req.query['userID'][0]
     }
 
-    const response = await getResponse(token, userID);
+    const response = await getResponse(token, userID, req);
     const jsonResponse = await response.json()
 
     if (response.status == 403) {

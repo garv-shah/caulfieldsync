@@ -3,7 +3,7 @@ import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
 import ical, {ICalCalendar, ICalCategory} from 'ical-generator';
 import {titleCase} from "title-case";
-import { server } from '../../../../../../config';
+import { server } from '../../../../config';
 import {ICalAlarmType} from "ical-generator/dist/alarm";
 
 export function getDate(args: {
@@ -54,7 +54,8 @@ function getResponse(token: string, userID: string): Promise<Response> {
 
 async function getCalendar(data: unknown, request: NextApiRequest): Promise<ICalCalendar> {
   async function main(data: unknown) {
-    let alertTime = request.query['alertTime'].toString();
+    let alertTime = (request.query['alertTime'] ?? 'null').toString();
+    const shorten = (request.query['shorten'] ?? 'true').toString();
 
     const calendar = ical({name: 'School Timetable'});
 
@@ -70,7 +71,7 @@ async function getCalendar(data: unknown, request: NextApiRequest): Promise<ICal
           classes[classIndex]['description'].toLowerCase()
       );
 
-      if (request.query['shorten'] == 'true') {
+      if (shorten == 'true') {
         detailedName = `\n${subjectName}`;
 
         subjectName = subjectName
