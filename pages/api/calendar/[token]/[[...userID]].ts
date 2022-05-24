@@ -17,7 +17,7 @@ export function getDate(args: {
 }
 
 function getResponse(token: string, userID: string, events: boolean): Promise<Response> {
-  return fetch(`${server}/api/${events ? 'events' : 'timetable'}/${token}${(userID == 'null') ? '' : `/${userID}`}?dayMinus=5&dayPlus=30`, {
+  return fetch(`${server}/api/${events ? 'events' : 'timetable'}/${token}${(userID == 'null') ? '' : `/${userID}`}?dayMinus=5&dayPlus=100`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json"
