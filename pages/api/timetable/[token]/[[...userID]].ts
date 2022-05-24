@@ -2,7 +2,16 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
 import {getDate} from "../../calendar/[token]/[[...userID]]";
-import {getUserID} from "../../calendar/[token]/[[...userID]]";
+import {server} from "../../../../config";
+
+export function getUserID(token: string): Promise<Response> {
+    return fetch(`${server}/api/userInfo/${token}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    });
+}
 
 function getResponse(token: string, userID: string, request: NextApiRequest): Promise<Response> {
     let startDate: string;

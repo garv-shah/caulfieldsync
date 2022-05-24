@@ -2,7 +2,7 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
 import {getDate} from "../../calendar/[token]/[[...userID]]";
-import {getUserID} from "../../calendar/[token]/[[...userID]]";
+import {getUserID} from "../../timetable/[token]/[[...userID]]";
 
 function getResponse(token: string, userID: string, request: NextApiRequest): Promise<Response> {
     let startDate: string;
