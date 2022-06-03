@@ -135,7 +135,7 @@ export default function Calendar() {
 
                                 <Space h="md"/>
 
-                                <Checkbox checked={true}
+                                <Checkbox defaultChecked={true}
                                           {...form.getInputProps('shorten')}
                                           label="Shorten Class Names?"/>
 

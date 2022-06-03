@@ -16,8 +16,8 @@ export function getDate(args: {
   return `${date.getFullYear()}-${("0" + (date.getMonth() + 1)).slice(-2)}-${("0" + date.getDate()).slice(-2)}`;
 }
 
-function getResponse(token: string, userID: string, events: boolean): Promise<Response> {
-  return fetch(`${server}/api/${events ? 'events' : 'timetable'}/${token}${(userID == 'null') ? '' : `/${userID}`}?dayMinus=5&dayPlus=100`, {
+function getResponse(token: string, userID: string, events: boolean, shorten: boolean): Promise<Response> {
+  return fetch(`${server}/api/${events ? 'events' : 'timetable'}/${token}${(userID == 'null') ? '' : `/${userID}`}?dayMinus=5&dayPlus=100&shorten=${shorten}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json"
@@ -89,19 +89,8 @@ async function getCalendar(data: unknown, request: NextApiRequest): Promise<ICal
             classes[classIndex]['description'].toLowerCase()
         );
 
-        if (shorten == 'true') {
-          detailedName = `\n${subjectName}`;
-
-          subjectName = subjectName
-              .split(' - ')[0]
-              .replace(/ [W|C]\d\d?/gm, "")
-              .replace(/ S1| S2/, "")
-              .replace(/ \([Yr]\d\d?\)/gm, "")
-              .replace(/ \(Yr \d\d?\)/, "")
-              .replace(/\d\d?\w /gm, "")
-              .replace(/\d\d? /gm, "")
-              .replace(/ Music_ensembles/gm, "")
-              .replace(/ \(Wh\)| \(Ca\)| \(CC\)| \(WH\)| \(Cc\)/, "");
+        if (classes[classIndex]['detailedName'] != undefined) {
+          detailedName = `\n${classes[classIndex]['detailedName']}`;
         }
 
         let attendees = [];
@@ -164,12 +153,13 @@ export default async function handler(
   const token: string = req.query['token'].toString()
   const events: boolean = req.query['events'] == 'true'
   let userID: string = 'null';
+  const shorten: boolean = (req.query['shorten'] ?? 'true').toString() == 'true';
 
   if (req.query['userID'] != undefined) {
     userID = req.query['userID'].toString()
   }
 
-  const response = await getResponse(token, userID, events);
+  const response = await getResponse(token, userID, events, shorten);
   const jsonResponse = await response.json()
 
   // @ts-ignore
