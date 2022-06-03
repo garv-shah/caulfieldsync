@@ -3,6 +3,7 @@ import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
 import {getDate} from "../../calendar/[token]/[[...userID]]";
 import {server} from "../../../../config";
+import {titleCase} from "title-case";
 
 export function getUserID(token: string): Promise<Response> {
     return fetch(`${server}/api/userInfo/${token}`, {
@@ -72,11 +73,43 @@ export default async function handler(
     }
 
     const response = await getResponse(token, userID, req);
-    const jsonResponse = await response.json()
+    let jsonResponse = await response.json()
+
+    const shorten = (req.query['shorten'] == 'true')
 
     if (response.status == 403) {
         res.status(403).json({ error: 'Invalid Token Provided. Please make sure you have the correct user token from CaulfieldLife' })
     } else {
+        if (shorten) {
+            // @ts-ignore
+            const classes: Array<Object> = jsonResponse['data']['classes']
+
+            for (let classIndex = 0; classIndex < classes.length; classIndex++) {
+                // @ts-ignore
+                let detailedName = classes[classIndex]['description']
+
+                let subjectName = titleCase(
+                    detailedName.toLowerCase()
+                );
+
+                subjectName = subjectName
+                    .split(' - ')[0]
+                    .replace(/ [W|C]\d\d?/gm, "")
+                    .replace(/ S1| S2/, "")
+                    .replace(/ \([Yr]\d\d?\)/gm, "")
+                    .replace(/ \(Yr \d\d?\)/, "")
+                    .replace(/\d\d?\w /gm, "")
+                    .replace(/\d\d? /gm, "")
+                    .replace(/ Music_ensembles/gm, "")
+                    .replace(/ \(Wh\)| \(Ca\)| \(CC\)| \(WH\)| \(Cc\)/, "");
+
+                // @ts-ignore
+                jsonResponse['data']['classes'][classIndex]['description'] = subjectName
+                // @ts-ignore
+                jsonResponse['data']['classes'][classIndex]['detailedName'] = detailedName
+            }
+        }
+
         res.status(response.status).json(jsonResponse)
     }
 }
