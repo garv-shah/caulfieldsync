@@ -1,6 +1,7 @@
 import fetch, {Response} from "node-fetch";
 import {NextApiRequest, NextApiResponse} from "next";
 
+
 function getResponse(token: string): Promise<Response> {
     return fetch("https://life-api.caulfieldlife.com.au/", {
         "headers": {
