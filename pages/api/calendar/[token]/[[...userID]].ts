@@ -59,7 +59,7 @@ async function getCalendar(data: unknown, request: NextApiRequest): Promise<ICal
           end: new Date(events[eventsIndex]['endTime']),
           summary: eventName,
           description: events[eventsIndex]['description'],
-          location: events[eventsIndex]['location']['details'],
+          location: (events[eventsIndex]['location'] ?? {'details': null})['details'],
           attendees: attendees
         });
 
