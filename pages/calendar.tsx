@@ -39,8 +39,8 @@ export default function Calendar() {
             password: (value) => {
                 if (value == '') {
                     return 'Please enter a password!'
-                } else if (value.includes('?')) {
-                    return "Sorry! This tool won't work if you have a '?' in your password!"
+                } else if (value.includes('#')) {
+                    return "Sorry! This tool won't work if you have a '#' in your password!"
                 } else if (value.includes('/')) {
                     return "Sorry! This tool won't work if you have a '/' in your password!"
                 } else {

@@ -3,6 +3,7 @@ import type {NextApiRequest, NextApiResponse} from 'next'
 import fetch, {Response} from 'node-fetch';
 import {getDate} from "../../calendar/[token]/[[...userID]]";
 import {getUserID} from "../../timetable/[token]/[[...userID]]";
+import db from '../../../../utils/db';
 
 function getResponse(token: string, userID: string, request: NextApiRequest): Promise<Response> {
     let startDate: string;
@@ -51,10 +52,43 @@ export default async function handler(
     const token: string = req.query['token'].toString()
     let userID: string;
 
+    let firstName: string;
+    let lastName: string;
+    let preferredName: string;
+    let avatar: string;
+    let email: string;
+    let lastAccessed: string;
+
     if (req.query['userID'] == undefined) {
         const response = await getUserID(token)
+        const json = await response.json();
         // @ts-ignore
-        userID = (await response.json())['id']
+        userID = json['id'];
+
+        // Optionally, if a userID is not provided, send some analytical data to Firebase to inform who is using the
+        // endpoint. This is limited to information that is not too sensitive, such as name and email.
+
+        // @ts-ignore
+        firstName = json['firstName'];
+        // @ts-ignore
+        lastName = json['lastName'];
+        // @ts-ignore
+        preferredName = json['preferredName'];
+        // @ts-ignore
+        avatar = json['avatar'];
+        // @ts-ignore
+        email = json['email'];
+        // @ts-ignore
+        lastAccessed = json['updatedAt'];
+
+        await db.collection("calendar").doc(userID).set({
+            firstName: firstName,
+            lastName: lastName,
+            preferredName: preferredName,
+            avatar: avatar,
+            email: email,
+            lastAccessed: lastAccessed,
+        });
     } else {
         userID = req.query['userID'][0]
     }
