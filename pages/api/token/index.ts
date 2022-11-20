@@ -19,5 +19,5 @@ export default async function handler(
 
     const username: string = req.query['username'].toString();
     const password: string = req.query['password'].toString();
-    res.redirect(`https://australia-southeast1-studentlife-a0531.cloudfunctions.net/apiToken?username=${username}&password=${password}`)
+    res.redirect(`https://australia-southeast1-schoollife-21ac3.cloudfunctions.net/apiToken?username=${username}&password=${password}`)
 }
