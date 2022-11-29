@@ -32,6 +32,12 @@ function getResponse(token: string, userID: string, request: NextApiRequest): Pr
 
         startDate = getDate({dayOffset: -1 - dayMinus, monthOffset: 0}) + 'T14:00:00.000Z';
         endDate = getDate({dayOffset: dayPlus, monthOffset: 0}) + 'T13:59:59.999Z';
+
+        // if doing the dayPlus pushes into the next year
+        if (startDate.split('-')[0] != endDate.split('-')[0]) {
+            // turn it into the last day of the year, 31st December
+            endDate = startDate.split('-')[0] + '-12-31T13:59:59.999Z'
+        }
     }
 
     return fetch("https://life-api.caulfieldlife.com.au/", {
