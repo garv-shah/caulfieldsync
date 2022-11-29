@@ -82,6 +82,12 @@ export default async function handler(
     if (req.query['userID'] == undefined) {
         const response = await getUserID(token)
         const json = await response.json();
+
+        // @ts-ignore
+        if (json['error'] == "Invalid Token Provided. Please make sure you have the correct user token from CaulfieldLife") {
+            res.status(403).json({ error: 'Invalid Token Provided. Please make sure you have the correct user token from CaulfieldLife'});
+        }
+
         // @ts-ignore
         userID = json['id'];
 
@@ -119,7 +125,7 @@ export default async function handler(
     const shorten = (req.query['shorten'] == 'true')
 
     if (response.status == 403) {
-        res.status(403).json({ error: 'Invalid Token Provided. Please make sure you have the correct user token from CaulfieldLife' })
+        res.status(403).json({ error: 'Invalid Token Provided. Please make sure you have the correct user token from CaulfieldLife'})
     } else {
         if (shorten) {
             // @ts-ignore

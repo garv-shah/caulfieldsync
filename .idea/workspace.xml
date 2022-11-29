@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ed35326e-0060-4855-8256-640a6870da98" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/vercel.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/api/calendar/[token]/[[...userID]].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/calendar/[token]/[[...userID]].ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/events/[token]/[[...userID]].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/events/[token]/[[...userID]].ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/reports/[token].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/reports/[token].ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/api/timetable/[token]/[[...userID]].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/timetable/[token]/[[...userID]].ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/token/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/token/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/api/userInfo/[token].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/userInfo/[token].ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,6 +145,8 @@
       <workItem from="1663474435858" duration="2130000" />
       <workItem from="1663476693019" duration="3569000" />
       <workItem from="1663719746533" duration="1594000" />
+      <workItem from="1668932645659" duration="2064000" />
+      <workItem from="1669620341435" duration="4169000" />
     </task>
     <servers />
   </component>
