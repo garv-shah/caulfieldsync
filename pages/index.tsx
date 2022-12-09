@@ -43,7 +43,7 @@ const Home: NextPage = () => {
                     <Link href="/calendar">
                         <a className={styles.card}>
                             <h2>Calendar &rarr;</h2>
-                            <p>Get an Apple Calendar subscription that syncs with your CaulfieldLife timetable!</p>
+                            <p>Get a calendar subscription that syncs with your CaulfieldLife timetable, any platform!</p>
                         </a>
                     </Link>
                 </div>

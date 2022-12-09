@@ -61,7 +61,7 @@ export default function Calendar() {
             <Head>
                 <title>CaulfieldSync - Calendar</title>
                 <meta name="description"
-                      content="Get an Apple Calendar subscription that syncs with your CaulfieldLife timetable!"/>
+                      content="Get a calendar subscription that syncs with your CaulfieldLife timetable, any platform!"/>
 
                 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
