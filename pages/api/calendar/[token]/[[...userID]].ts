@@ -85,9 +85,7 @@ async function getCalendar(data: unknown, request: NextApiRequest): Promise<ICal
       let detailedName = '';
 
       for (let classIndex = 0; classIndex < classes.length; classIndex++) {
-        let subjectName = titleCase(
-            classes[classIndex]['description'].toLowerCase()
-        );
+        let subjectName = classes[classIndex]['description'];
 
         if (classes[classIndex]['detailedName'] != undefined) {
           detailedName = `\n${classes[classIndex]['detailedName']}`;
