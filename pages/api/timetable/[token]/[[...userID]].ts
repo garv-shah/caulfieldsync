@@ -154,6 +154,8 @@ export default async function handler(
                     .replace(/\d\d?\w /gm, "")
                     .replace(/\d\d? /gm, "")
                     .replace(/ Music_ensembles/gm, "")
+                    .replace(/ Caulfield_connection/gm, "")
+                    .replace(/Sac/gm, "SAC")
                     .replace(/ \(Wh\)| \(Ca\)| \(CC\)| \(WH\)| \(Cc\)/, "");
 
                 // @ts-ignore
