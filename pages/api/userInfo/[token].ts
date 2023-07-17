@@ -35,6 +35,7 @@ export default async function handler(
         return res.status(200).send("ok");
     }
 
+    // @ts-ignore
     const token: string = req.query['token'].toString()
     const response = await getResponse(token);
     const jsonResponse = await response.json()

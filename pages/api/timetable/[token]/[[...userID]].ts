@@ -75,6 +75,7 @@ export default async function handler(
         return res.status(200).send("ok");
     }
 
+    // @ts-ignore
     const token: string = req.query['token'].toString()
     let userID: string;
 
@@ -87,6 +88,7 @@ export default async function handler(
 
     if (req.query['userID'] == undefined) {
         const response = await getUserID(token)
+        console.log(response);
         const json = await response.json();
 
         // @ts-ignore
@@ -122,7 +124,7 @@ export default async function handler(
             lastAccessed: lastAccessed,
         });
     } else {
-        userID = req.query['userID'][0]
+        userID = req.query['userID'].toString();
     }
 
     const response = await getResponse(token, userID, req);
@@ -140,6 +142,11 @@ export default async function handler(
             for (let classIndex = 0; classIndex < classes.length; classIndex++) {
                 // @ts-ignore
                 let detailedName = classes[classIndex]['description']
+
+                if (detailedName == null) {
+                    // @ts-ignore
+                    detailedName = classes[classIndex]['title'];
+                }
 
                 let subjectName = titleCase(
                     detailedName.toLowerCase()

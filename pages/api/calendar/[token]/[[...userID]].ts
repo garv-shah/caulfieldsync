@@ -155,6 +155,7 @@ export default async function handler(
     return res.status(200).send("ok");
   }
 
+  // @ts-ignore
   const token: string = req.query['token'].toString()
   const events: boolean = req.query['events'] == 'true'
   let userID: string = 'null';
@@ -165,7 +166,14 @@ export default async function handler(
   }
 
   const response = await getResponse(token, userID, events, shorten);
-  const jsonResponse = await response.json()
+  console.log(response);
+  let jsonResponse;
+
+  try {
+    jsonResponse = await response.json()
+  } catch {
+    res.status(403).json({ error: 'Invalid Token Provided. Please make sure you have the correct user token from CaulfieldLife' })
+  }
 
   // @ts-ignore
   if (response.status == 200 && jsonResponse['errors'] == undefined) {

@@ -5,8 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ed35326e-0060-4855-8256-640a6870da98" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/pages/api/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/calendar/[token]/[[...userID]].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/calendar/[token]/[[...userID]].ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/api/timetable/[token]/[[...userID]].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/timetable/[token]/[[...userID]].ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/userInfo/[token].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/userInfo/[token].ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vercel.json" beforeDir="false" afterPath="$PROJECT_DIR$/vercel.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,29 +59,30 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Project.color&quot;: &quot;5e1b4a&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/usr/local/bin/node&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_interpreter_path&quot;: &quot;/usr/local/bin/node&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;/Users/garv/Documents/GitHub/caulfieldsync/.yarn/releases/yarn-3.2.1.cjs&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/garv/Documents/GitHub/caulfieldsync/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Project.color": "5e1b4a",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/usr/local/bin/node",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "/usr/local/bin/node",
+    "nodejs_package_manager_path": "/Users/garv/Documents/GitHub/caulfieldsync/.yarn/releases/yarn-3.2.1.cjs",
+    "settings.editor.selected.configurable": "settings.nodejs",
+    "show.migrate.to.gradle.popup": "false",
+    "ts.external.directory.path": "/Users/garv/Documents/GitHub/caulfieldsync/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/pages/api" />
@@ -150,7 +159,12 @@
       <workItem from="1670569492547" duration="124000" />
       <workItem from="1675051691911" duration="1445000" />
       <workItem from="1675065235296" duration="1429000" />
-      <workItem from="1675201145600" duration="87000" />
+      <workItem from="1675201145600" duration="1119000" />
+      <workItem from="1675846607632" duration="118000" />
+      <workItem from="1677308043660" duration="3910000" />
+      <workItem from="1677391342026" duration="1238000" />
+      <workItem from="1682328938961" duration="954000" />
+      <workItem from="1689573494178" duration="5564000" />
     </task>
     <servers />
   </component>
