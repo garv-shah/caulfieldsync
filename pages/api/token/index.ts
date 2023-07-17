@@ -17,7 +17,9 @@ export default async function handler(
         res.status(403).json({ error: "No password provided. Please provide a user's password from CaulfieldLife" })
     }
 
+    // @ts-ignore
     const username: string = req.query['username'].toString();
+    // @ts-ignore
     const password: string = req.query['password'].toString();
     res.redirect(`https://australia-southeast1-schoollife-21ac3.cloudfunctions.net/apiToken?username=${username}&password=${password}`)
 }

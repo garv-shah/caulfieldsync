@@ -36,6 +36,7 @@ export default async function handler(
         return res.status(200).send("ok");
     }
 
+    // @ts-ignore
     const token: string = req.query['token'].toString()
 
     let userID: string;
