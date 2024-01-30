@@ -80,7 +80,7 @@ export default function Calendar() {
 
                 <Text align="center">Please enter your CaulfieldLife login details to proceed!</Text>
                 <Space h="md"/>
-                <Text align="center" size={"sm"}>Be patient, it&apos;ll take about 15 seconds :)</Text>
+                <Text align="center" size={"sm"}>Be patient, it&apos;ll take about 20 seconds :)</Text>
 
                 <Space h="lg"/>
                 <div>
@@ -98,11 +98,20 @@ export default function Calendar() {
 
                             const token: string = (await response.json())['token']
 
+                            const userInfoResponse = await fetch(`/api/userInfo/${token}`, {
+                                method: "GET",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                            });
+
+                            const userID: string = (await userInfoResponse.json())['id']
+
                             if (token == undefined) {
                                 form.setFieldError("password", "Sorry! Your password was either wrong or something went horribly wrong :P\nIf so, please tell Garv, they'll try to help")
                             } else {
                                 // await fetch(`/api/calendar/${token}`);
-                                calendarSetURL( `/api/calendar/${token}`);
+                                calendarSetURL( `/api/calendar/${token}/${userID}`);
                                 setWindowURL(window.location.origin);
                                 const button = document.getElementById("generate-button");
                                 // @ts-ignore

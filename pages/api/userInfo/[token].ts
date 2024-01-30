@@ -35,9 +35,77 @@ export default async function handler(
         return res.status(200).send("ok");
     }
 
-    // @ts-ignore
     const token: string = req.query['token'].toString()
     const response = await getResponse(token);
+    const session = await fetch("https://life-api.caulfieldlife.com.au/", {
+        "headers": {
+            "accept": "*/*",
+            "accept-language": "en-US,en;q=0.9",
+            "authorization": "Bearer X-ae97a16a-3e28-4365:Y-53e74b38-8a53-4ef7",
+            "content-type": "application/json",
+            "sec-ch-ua": "\"Not)A;Brand\";v=\"24\", \"Chromium\";v=\"116\"",
+            "sec-ch-ua-mobile": "?1",
+            "sec-ch-ua-platform": "\"Android\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "x-community-token": token,
+            "Referer": "https://caulfieldlife.com.au/",
+            "Referrer-Policy": "strict-origin-when-cross-origin"
+        },
+        "body": `{\"operationName\":\"GetSessionByJwt\",\"variables\":{\"jwtToken\":\"${token}\"},\"query\":\"query GetSessionByJwt($jwtToken: String!) {\\n  sessionByJwt(jwtIdToken: $jwtToken) {\\n    id\\n    processedAt\\n    isImpersonating\\n    xhqToken\\n    member {\\n      id\\n      firstName\\n      lastName\\n      preferredName\\n      roles {\\n        title\\n        __typename\\n      }\\n      __typename\\n    }\\n    sessionSyncCheckpoints {\\n      success\\n      type\\n      error\\n      __typename\\n    }\\n    __typename\\n  }\\n}\\n\"}`,
+        "method": "POST"
+    });
+
+    const sessionData = await session.json();
+
+    // @ts-ignore
+    const xhqToken = sessionData['data']['sessionByJwt']['xhqToken'];
+
+    const xhqInfo = await fetch("https://prod.xhq-platform.com/graphql", {
+        "headers": {
+            "accept": "*/*",
+            "accept-language": "en-US,en;q=0.9",
+            "authorization": xhqToken,
+            "content-type": "application/json",
+            "sec-ch-ua": "\"Not)A;Brand\";v=\"24\", \"Chromium\";v=\"116\"",
+            "sec-ch-ua-mobile": "?1",
+            "sec-ch-ua-platform": "\"Android\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "Referer": "https://caulfieldlife.com.au/",
+            "Referrer-Policy": "strict-origin-when-cross-origin"
+        },
+        "body": "{\"operationName\":\"XHQ_Me\",\"variables\":{},\"query\":\"fragment XhqMeFields on Member {\\n  id\\n  firstName\\n  lastName\\n  avatar\\n  email\\n  channels(excludeArchived: true) {\\n    items {\\n      id\\n      name\\n      title\\n      type\\n      isArchived\\n      __typename\\n    }\\n    __typename\\n  }\\n  lastLoggedAt\\n  capabilities {\\n    items {\\n      id\\n      name\\n      __typename\\n    }\\n    __typename\\n  }\\n  roles {\\n    items {\\n      id\\n      name\\n      __typename\\n    }\\n    __typename\\n  }\\n  __typename\\n}\\n\\nquery XHQ_Me {\\n  me {\\n    ...XhqMeFields\\n    __typename\\n  }\\n}\\n\"}",
+        "method": "POST"
+    });
+
+    const xhqData = await xhqInfo.json();
+
+    // @ts-ignore
+    const memberID = xhqData['data']['me']['id'];
+
+    // const inbox = await fetch("https://prod.xhq-platform.com/graphql", {
+    //     "headers": {
+    //         "accept": "*/*",
+    //         "accept-language": "en-US,en;q=0.9",
+    //         "authorization": xhqToken,
+    //         "content-type": "application/json",
+    //         "sec-ch-ua": "\"Not)A;Brand\";v=\"24\", \"Chromium\";v=\"116\"",
+    //         "sec-ch-ua-mobile": "?1",
+    //         "sec-ch-ua-platform": "\"Android\"",
+    //         "sec-fetch-dest": "empty",
+    //         "sec-fetch-mode": "cors",
+    //         "sec-fetch-site": "cross-site",
+    //         "Referer": "https://caulfieldlife.com.au/",
+    //         "Referrer-Policy": "strict-origin-when-cross-origin"
+    //     },
+    //     "body": `{\"operationName\":\"Notifications\",\"variables\":{\"memberId\":\"${memberID}\",\"status\":\"ANNOUNCEMENT\",\"limit\":10,\"pageToken\":null,\"where\":{}},\"query\":\"query Notifications($memberId: ID!, $status: String!, $limit: Int, $pageToken: String, $where: NotificationWhereInput) {\\n  notifications(memberId: $memberId, status: $status, limit: $limit, pageToken: $pageToken, where: $where) {\\n    items {\\n      id\\n      important\\n      status\\n      object {\\n        ... on Message {\\n          id\\n          title\\n          body\\n          excerpt\\n          parentId\\n          read\\n          createdBy {\\n            id\\n            firstName\\n            lastName\\n            avatar\\n            __typename\\n          }\\n          createdAt\\n          sentAt\\n          scheduledAt\\n          __typename\\n        }\\n        __typename\\n      }\\n      mergeFields {\\n        name\\n        value\\n        type\\n        __typename\\n      }\\n      __typename\\n    }\\n    nextPage\\n    __typename\\n  }\\n}\\n\"}`,
+    //     "method": "POST"
+    // });
+    // // @ts-ignore
+    // console.log((await inbox.json())['data']['notifications']['items'][0]);
     const jsonResponse = await response.json()
 
     // @ts-ignore

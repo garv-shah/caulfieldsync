@@ -30,8 +30,12 @@ function getResponse(token: string, userID: string, request: NextApiRequest): Pr
         if (isNaN(dayMinus)) dayMinus = 0;
         if (isNaN(dayPlus)) dayPlus = 0;
 
+        console.log(dayPlus);
+
         startDate = getDate({dayOffset: -1 - dayMinus, monthOffset: 0}) + 'T14:00:00.000Z';
         endDate = getDate({dayOffset: dayPlus, monthOffset: 0}) + 'T13:59:59.999Z';
+
+        console.log(endDate);
 
         // if doing the dayPlus pushes into the next year
         if (startDate.split('-')[0] != endDate.split('-')[0]) {
@@ -75,7 +79,6 @@ export default async function handler(
         return res.status(200).send("ok");
     }
 
-    // @ts-ignore
     const token: string = req.query['token'].toString()
     let userID: string;
 
@@ -88,7 +91,6 @@ export default async function handler(
 
     if (req.query['userID'] == undefined) {
         const response = await getUserID(token)
-        console.log(response);
         const json = await response.json();
 
         // @ts-ignore
@@ -124,7 +126,7 @@ export default async function handler(
             lastAccessed: lastAccessed,
         });
     } else {
-        userID = req.query['userID'].toString();
+        userID = req.query['userID'][0]
     }
 
     const response = await getResponse(token, userID, req);
@@ -142,29 +144,32 @@ export default async function handler(
             for (let classIndex = 0; classIndex < classes.length; classIndex++) {
                 // @ts-ignore
                 let detailedName = classes[classIndex]['description']
+                let subjectName = "";
 
                 if (detailedName == null) {
                     // @ts-ignore
                     detailedName = classes[classIndex]['title'];
+                    // @ts-ignore
+                    subjectName = classes[classIndex]['title'];
+                } else {
+                    subjectName = titleCase(
+                        detailedName.toLowerCase()
+                    );
+
+                    subjectName = subjectName
+                        .split(' - ')[0]
+                        .replace(/ [W|C]\d\d?/gm, "")
+                        .replace(/ S1| S2/, "")
+                        .replace(/ \([Yr]\d\d?\)/gm, "")
+                        .replace(/ \(Yr \d\d?\)/, "")
+                        .replace(/\d\d?\w /gm, "")
+                        .replace(/\d\d? /gm, "")
+                        .replace(/ Music_ensembles/gm, "")
+                        .replace(/ Caulfield_connection/gm, "")
+                        .replace(/Sac/gm, "SAC")
+                        .replace(/SAC_study/gm, "SAC and Study")
+                        .replace(/ \(Wh\)| \(Ca\)| \(CC\)| \(WH\)| \(Cc\)/, "");
                 }
-
-                let subjectName = titleCase(
-                    detailedName.toLowerCase()
-                );
-
-                subjectName = subjectName
-                    .split(' - ')[0]
-                    .replace(/ [W|C]\d\d?/gm, "")
-                    .replace(/ S1| S2/, "")
-                    .replace(/ \([Yr]\d\d?\)/gm, "")
-                    .replace(/ \(Yr \d\d?\)/, "")
-                    .replace(/\d\d?\w /gm, "")
-                    .replace(/\d\d? /gm, "")
-                    .replace(/ Music_ensembles/gm, "")
-                    .replace(/ Caulfield_connection/gm, "")
-                    .replace(/Sac/gm, "SAC")
-                    .replace(/SAC_study/gm, "SAC and Study")
-                    .replace(/ \(Wh\)| \(Ca\)| \(CC\)| \(WH\)| \(Cc\)/, "");
 
                 // @ts-ignore
                 jsonResponse['data']['classes'][classIndex]['description'] = subjectName
