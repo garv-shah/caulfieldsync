@@ -39,10 +39,6 @@ export default function Calendar() {
             password: (value) => {
                 if (value == '') {
                     return 'Please enter a password!'
-                } else if (value.includes('#')) {
-                    return "Sorry! This tool won't work if you have a '#' in your password!"
-                } else if (value.includes('/')) {
-                    return "Sorry! This tool won't work if you have a '/' in your password!"
                 } else {
                     return null;
                 }
@@ -89,7 +85,7 @@ export default function Calendar() {
                             console.log(values.events);
                             setVisible(true);
 
-                            const response = await fetch(`/api/token?username=${values.studentID}&password=${values.password}`, {
+                            const response = await fetch(`/api/token?username=${encodeURIComponent(values.studentID)}&password=${encodeURIComponent(values.password)}`, {
                                 method: "GET",
                                 headers: {
                                     "Content-Type": "application/json"
